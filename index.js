@@ -25,10 +25,10 @@ const typeDefs = gql`
     id: ID
     title: String
     body: String
-    comments: [Comments]
+    comments: [Comment]
   }
 
-  type Comments {
+  type Comment {
     postId: Float,
     id: ID,
     name: String,
@@ -44,50 +44,49 @@ const typeDefs = gql`
     todo(id: ID = 1): Todo
     posts: [Post]
     post(id: ID = 1): Post
-    comments(postID: ID = 1): [Comments]
+    comments(postID: ID = 1): [Comment]
   }
 `;
 
 const books = [
-    {
-        title: 'Harry Potter and the Chamber of Secrets',
-        author: 'J.K. Rowling',
-    },
-    {
-        title: 'Jurassic Park',
-        author: 'Michael Crichton',
-    },
+  {
+    title: 'Harry Potter and the Chamber of Secrets',
+    author: 'J.K. Rowling',
+  },
+  {
+    title: 'Jurassic Park',
+    author: 'Michael Crichton',
+  },
 ];
 
 
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
-    Query: {
-        books: () => books,
-        todo: (parent, {id}) => {
-            return fetch(`https://jsonplaceholder.typicode.com/todos/${id}`)
-                .then(res => res.json())
-        },
-        post: (parent, {id}) => {
-            // console.log('~~~~>>>', parent);
-            return fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
-                .then(res => res.json())
-                // .then(json => {
-                    
-                //     this.comments(this.post, id)
-                // })
-        },
-        posts: (parent) => {
-            // console.log('~~~~>>>', parent);
-            return fetch(`https://jsonplaceholder.typicode.com/posts`).then(res => res.json())
-        },
-        comments: (parent, {id = 1}) => {
-            console.log('~~~~>>>', parent);
-            return fetch(`https://jsonplaceholder.typicode.com/posts/${id}/comments`).then(res => res.json())
-        }
-
+  Query: {
+    books: () => books,
+    todo: (parent, { id }) => {
+      return fetch(`https://jsonplaceholder.typicode.com/todos/${id}`)
+        .then(res => res.json())
     },
+    post: (parent, { id }) => {
+      return fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
+        .then(res => res.json())
+    },
+    posts: (parent) => {
+      return fetch(`https://jsonplaceholder.typicode.com/posts`).then(res => res.json())
+    },
+    comments: (parent, { id = 1 }) => {
+      console.log('~~~~>>>', parent);
+    }
+  },
+
+  Post: {
+    comments: (parent, { id = 1 }) => {
+      console.log('~~~~>>>', parent);
+      return fetch(`https://jsonplaceholder.typicode.com/posts/${id}/comments`).then(res => res.json())
+    }
+  }
 };
 
 
