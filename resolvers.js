@@ -1,6 +1,5 @@
 const fetch = require('node-fetch');
 
-
 const fetchComments = (id) => (
     fetch(`https://jsonplaceholder.typicode.com/posts/${id}/comments`).then(res => res.json())
 )
@@ -32,4 +31,6 @@ const resolvers = {
     }
 };
 
-module.exports = resolvers
+module.exports = {
+    resolvers
+}
